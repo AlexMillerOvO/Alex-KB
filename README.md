@@ -35,15 +35,9 @@
 | [Karpathy · LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | 三层分工：`raw/` 只读原文、`wiki/` 持续整理、`AGENTS.md` 是维护协议。本库的骨架来自这里 |
 | [SherwinQ/karpathy-wiki](https://github.com/SherwinQ/karpathy-wiki) | 社区 Agent Skill 实现。四阶段流水线（ingest / compile / query / lint）、7 种实体类型、三级索引，都来自这里 |
 | [飞书教程 · AI 知识库-Obsidian【卡帕西知识库升级版】](https://fcnqzlxauf7p.feishu.cn/wiki/CpitwsTuFiFVvfkqa9ocpBPInKw) | 本次搭建的直接依据。它把卡帕西的思路拆成了可执行的步骤 |
-| [ThreeFrontTeeth/mengya-knowledge](https://github.com/ThreeFrontTeeth/mengya-knowledge) | **评估过，未采用**。理由见下 |
+| [ThreeFrontTeeth/mengya-knowledge](https://github.com/ThreeFrontTeeth/mengya-knowledge) | **评估过，未采用** |
 
-### 为什么没用萌芽知识库
-
-萌芽的 `00-灵感库` 到 `06-Wiki` 七类目录很适合个人创作流——记灵感、推项目、存成品。这一点它比卡帕西社区实现强。
-
-但这个库的定位是**行业情报与设计知识的批量化积累**，需要四阶段流水线来做批量编译，所以结构上保住了社区实现。最终只借用了它的一处设计：
-
-**三种时间分开记。**
+### 三种时间分开记
 
 | 字段 | 含义 |
 |---|---|
