@@ -1,0 +1,7 @@
+.DS_Store
+*.icloud
+
+# 本地配置与缓存，不发布
+惊人的老人/.env
+惊人的老人/.cache/
+惊人的老人/.obsidian/workspace*.json
