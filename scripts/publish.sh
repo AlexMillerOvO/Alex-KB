@@ -10,7 +10,6 @@ set -euo pipefail
 
 VAULT="${VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/惊人的老人}"
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DEST="$REPO/惊人的老人"
 REMOTE="${REMOTE:-https://github.com/AlexMillerOvO/Alex-KB.git}"
 BRANCH="${BRANCH:-main}"
 
@@ -19,13 +18,20 @@ if [ ! -d "$VAULT" ]; then
   exit 1
 fi
 
+# 先切到仓库根：rsync 目标用相对路径，避免镜像到当前目录之外
+cd "$REPO"
+DEST="惊人的老人"
+
 # iCloud 里可能有没有实体化的占位文件，先尽力下载
 if command -v brctl >/dev/null 2>&1; then
   brctl download "$VAULT" 2>/dev/null || true
 fi
 
 mkdir -p "$DEST"
-rsync -a --delete \
+# 增量镜像，不加 --delete：
+#   知识库基本只增不减；故意保留旧副本，避免误删。
+#   若在 vault 里重命名/删除了文章，需手工 `git rm` 清理镜像里的残留。
+rsync -a \
   --exclude '.cache/' \
   --exclude '.env' \
   --exclude '.DS_Store' \
@@ -33,14 +39,13 @@ rsync -a --delete \
   --exclude '.obsidian/workspace*.json' \
   "$VAULT/" "$DEST/"
 
-echo "已同步：$VAULT -> $DEST"
+echo "已同步：$VAULT -> $REPO/$DEST"
 
 if [ "${1:-}" = "--dry-run" ]; then
   echo "(dry-run：跳过提交与推送)"
   exit 0
 fi
 
-cd "$REPO"
 git add -A
 
 if git diff --cached --quiet; then
