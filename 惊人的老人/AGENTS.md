@@ -201,8 +201,24 @@ python3 scripts/ingest_daily.py --dry-run    # 只报告不写文件
 - 写完后自动向 `log.md` 追加一条 ingest 记录
 - 日报是**二手汇总**，生成的 raw 文件顶部会写明这一点
 
-定时：每天 18:00（Asia/Shanghai）由会话内的定时任务触发「抓取 → 编译 → 更新索引」。
+定时：每天 18:00（Asia/Shanghai）由会话内的定时任务触发「抓取 → 编译 → 更新索引 → 发布」。
 脚本本身也可被 cron / launchd 单独调用（只做抓取，不含编译）。
+
+### 发布到 GitHub
+
+本库镜像发布在 <https://github.com/AlexMillerOvO/Alex-KB>。
+
+```bash
+~/Documents/Alex-KB/scripts/publish.sh            # 同步 + 有变更才提交 + 推送
+~/Documents/Alex-KB/scripts/publish.sh --dry-run  # 只同步，不提交
+```
+
+- 本 vault 是**唯一事实源**；`~/Documents/Alex-KB/惊人的老人/` 是镜像，不要直接改镜像
+- 增量镜像，不带 `--delete`：在 vault 里重命名或删除文章后，需手工 `git rm` 清理镜像里的残留
+- 发布失败**不影响**入库与编译成果，如实报告即可，不要回滚
+- `github.com:443` 在本机被单独阻断，`api.github.com` 正常；git 已配置按域名代理
+  `http.https://github.com/.proxy = http://127.0.0.1:7897`，换网络环境后可能需要调整
+
 
 ## 十、Token 预算
 
