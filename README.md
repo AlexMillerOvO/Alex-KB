@@ -76,15 +76,16 @@
 ## 每天 18:00 发生什么
 
 ```text
-抓取 → 分类入库 → 两步编译 → 更新索引 → 发布
+抓取 → 分类入库 → 两步编译 → 反链审计 → 更新索引 → 发布
 ```
 
-1. **抓取**：`scripts/ingest_daily.py` 拉取当天的游戏行业日报，写入 `raw/<日期>_游戏行业日报.md`。已存在的日期一律跳过（`raw/` 不可变）
+1. **抓取**：`scripts/ingest_daily.py` 拉取当天的行业日报与游戏百科（每天 3 个词条），写入 `raw/`。已存在的日期一律跳过（`raw/` 不可变）
 2. **编译**：先搜已有主题，能更新就更新，确有独立价值才新建。**不一篇来源机械生成一篇摘要**
-3. **登记**：产生 event 页面时填 `event_date`（事件发生日）并登记到 Events Timeline
-4. **索引**：同步 Dashboard / Concept Index / Source Index
-5. **日志**：向 `log.md` 追加一条记录
-6. **发布**：同步到本仓库
+3. **反链审计**：`scripts/link_report.py` 检查链接结构，给孤立文章补链接。不放任文章变成图谱孤岛，也不为凑数硬连不相关的内容
+4. **登记**：产生 event 页面时填 `event_date`（事件发生日）并登记到 Events Timeline
+5. **索引**：同步 Dashboard / Concept Index / Source Index
+6. **日志**：向 `log.md` 追加一条记录
+7. **发布**：同步到本仓库
 
 ## 数据源
 
