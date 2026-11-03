@@ -151,3 +151,8 @@ Wiki 目录结构已创建，准备开始 ingest。
 
 - `raw/2026-11-03_arxiv_2609.16679_ai-for-games-in-the-foundation-model-era.md` — paper 2609.16679，236688 字符，hash 2483d46f4993
 - 来源：arXiv 预印本，多数未经同行评审
+
+## [2026-11-03] ingest | arXiv 论文 ×1
+
+- `raw/2026-11-03_arxiv_2609.16679_ai-for-games-in-the-foundation-model-era.md` — paper 2609.16679，13287 字符，hash c52d9dd93b27
+- 来源：arXiv 预印本，多数未经同行评审
