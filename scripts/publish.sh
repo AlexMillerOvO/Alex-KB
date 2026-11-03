@@ -36,9 +36,13 @@ rsync -a \
   --exclude '.env' \
   --exclude '.DS_Store' \
   --exclude '*.icloud' \
-  --exclude '.obsidian/workspace*.json' \
   --exclude '__pycache__/' \
   --exclude '*.pyc' \
+  --exclude '.obsidian/workspace*.json' \
+  --exclude '.obsidian/graph.json' \
+  --exclude '.obsidian/appearance.json' \
+  --exclude '.obsidian/hotkeys.json' \
+  --exclude '.obsidian/bookmarks.json' \
   "$VAULT/" "$DEST/"
 
 echo "已同步：$VAULT -> $REPO/$DEST"

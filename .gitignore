@@ -4,7 +4,17 @@
 # 本地配置与缓存，不发布
 惊人的老人/.env
 惊人的老人/.cache/
+
+# Obsidian 纯本机 UI 状态：每次调视图/外观都会变，提交进来只会刷屏
 惊人的老人/.obsidian/workspace*.json
+惊人的老人/.obsidian/graph.json
+惊人的老人/.obsidian/appearance.json
+惊人的老人/.obsidian/hotkeys.json
+惊人的老人/.obsidian/bookmarks.json
+
+# 保留（影响仓库行为，clone 后需要）：
+#   惊人的老人/.obsidian/app.json          alwaysUpdateLinks 等核心设置
+#   惊人的老人/.obsidian/core-plugins.json 启用的核心插件
 
 # Python 字节码缓存
 __pycache__/
