@@ -96,3 +96,14 @@ Wiki 目录结构已创建，准备开始 ingest。
 - `raw/2026-11-03_游戏行业日报.md` — 日报，published 2026-11-03，6345 字符，hash 27b9082af8ea
 - `raw/2026-11-03_游戏百科.md` — 百科词条，published 2026-11-03，2904 字符，hash dde81f3f3c2d
 - 来源：WorkBuddy 自动生成，属二手汇总，引用以原始报道为准
+
+## [2026-11-03] compile | 百科词条首次编译 ×3
+
+- 来源：`raw/2026-11-03_游戏百科.md`（WorkBuddy 百科，每天 3 词条，单一二手来源）
+- 新建 `wiki/游戏设计/像素艺术的抖动技法.md`（concept，confidence: low）
+- 新建 `wiki/游戏设计/ECS 与 DOTS.md`（concept，confidence: low）
+- 新建 `wiki/游戏设计/魂系设计语言.md`（pattern，confidence: low）
+- 三篇均含「反论与缺口」段，`has_counter_arguments: true`
+- 未沉淀：2026-11-03 的行业日报（影之刃零 72 小时 400 万份）留待按事件线合并，未单独建页
+- 更新 Concept Index / Source Index / Dashboard
+- 依据：AGENTS.md 九（百科词条编译规则）
