@@ -37,6 +37,8 @@ rsync -a \
   --exclude '.DS_Store' \
   --exclude '*.icloud' \
   --exclude '.obsidian/workspace*.json' \
+  --exclude '__pycache__/' \
+  --exclude '*.pyc' \
   "$VAULT/" "$DEST/"
 
 echo "已同步：$VAULT -> $REPO/$DEST"

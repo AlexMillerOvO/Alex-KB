@@ -5,3 +5,7 @@
 惊人的老人/.env
 惊人的老人/.cache/
 惊人的老人/.obsidian/workspace*.json
+
+# Python 字节码缓存
+__pycache__/
+*.pyc
