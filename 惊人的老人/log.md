@@ -90,3 +90,9 @@ Wiki 目录结构已创建，准备开始 ingest。
 - `raw/2026-10-10_游戏行业日报.md` — published 2026-10-10，5753 字符，hash f0825c4f1692
 - `raw/2026-10-09_游戏行业日报.md` — published 2026-10-09，4117 字符，hash 74f302478de3
 - 来源：WorkBuddy 自动生成日报，属二手汇总，引用以原始报道为准
+
+## [2026-11-03] ingest | WorkBuddy 内容 ×2
+
+- `raw/2026-11-03_游戏行业日报.md` — 日报，published 2026-11-03，6345 字符，hash 27b9082af8ea
+- `raw/2026-11-03_游戏百科.md` — 百科词条，published 2026-11-03，2904 字符，hash dde81f3f3c2d
+- 来源：WorkBuddy 自动生成，属二手汇总，引用以原始报道为准

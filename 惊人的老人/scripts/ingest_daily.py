@@ -34,6 +34,7 @@ LOG = os.path.join(VAULT, "log.md")
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
       "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
 SLUG = "游戏行业日报"
+WIKI_SLUG = "游戏百科"
 
 VOID = {"br", "img", "meta", "link", "hr", "input"}
 BLOCK = {"p", "div", "section", "header", "footer", "ol", "ul", "table",
@@ -289,6 +290,63 @@ def build_markdown(date, html, scraped):
     return "\n".join(fm), title, content_hash
 
 
+def build_wiki_markdown(date, html, scraped):
+    """游戏百科：每天 3 个词条（美术 / 开发 / 拆解各一）。"""
+    b = TreeBuilder()
+    b.feed(html)
+    body_node = first(b.root, "body") or b.root
+
+    h1 = first(body_node, "h1")
+    title = clean(h1.text()) if h1 else f"游戏百科 · {date}"
+
+    blocks = render_block(body_node)
+    md = "\n\n".join(x for x in blocks if x.strip())
+    md = re.sub(r"\n*由 WorkBuddy 自动生成.*$", "", md, flags=re.S).strip()
+
+    content_hash = hashlib.sha256(md.encode("utf-8")).hexdigest()
+
+    fm = [
+        "---",
+        f"title: {title}",
+        "type: source",
+        "stage: raw",
+        "source_kind: encyclopedia",
+        f"source_url: {BASE}/wiki/{date}.html",
+        f"published: {date}",
+        f"scraped: {scraped}",
+        "source_updated: 未知",
+        "classified_as: concept",
+        f'content_hash: "{content_hash}"',
+        "review_status: resolved",
+        "tags:",
+        "  - 游戏设计",
+        "  - raw",
+        "  - 百科",
+        "---",
+        "",
+        "> **来源性质**：WorkBuddy 自动生成的百科词条，每天 3 个（美术 / 开发 / 拆解各一）。"
+        "文末「来源」指向公开资料，属于二手整理。词条正文里的判断是生成方的概括，"
+        "编译成 Wiki 页时应标 `confidence: low` 并回查原始来源。",
+        "",
+        md,
+        "",
+    ]
+    return "\n".join(fm), title, content_hash
+
+
+def parse_wiki_index(html):
+    """索引页里的 /wiki/YYYY-MM-DD.html 链接。"""
+    dates = []
+    seen = set()
+    for m in re.finditer(r'href="wiki/(\d{4}-\d{2}-\d{2})\.html"', html):
+        d = m.group(1)
+        if d not in seen:
+            seen.add(d)
+            dates.append(d)
+    return sorted(dates, reverse=True)
+
+
+
 def append_log(lines):
     if not lines:
         return
@@ -352,21 +410,54 @@ def main():
         written.append((d, rel, len(content), chash[:12]))
         print(f"✓ {rel}  {len(content)} 字符  hash={chash[:12]}")
 
-    if not args.dry_run and written:
+    # ---- 游戏百科（每日 3 词条：美术 / 开发 / 拆解）----
+    wiki_dates = parse_wiki_index(index_html)
+    if args.date:
+        wiki_dates = [d for d in wiki_dates if d == args.date]
+    elif args.latest:
+        wiki_dates = wiki_dates[: args.latest]
+
+    w_written, w_skipped = [], []
+    for d in wiki_dates:
+        dest = os.path.join(RAW, f"{d}_{WIKI_SLUG}.md")
+        if os.path.exists(dest):
+            w_skipped.append(d)
+            continue
+        rel = os.path.join("raw", f"{d}_{WIKI_SLUG}.md")
+        if args.dry_run:
+            print(f"[dry-run] 将写入 {rel}")
+            continue
+        try:
+            html = fetch(f"{BASE}/wiki/{d}.html")
+        except (urllib.error.URLError, TimeoutError) as e:
+            print(f"WARN: 百科 {d} 抓取失败：{e}", file=sys.stderr)
+            failed.append((f"wiki/{d}", str(e)))
+            continue
+        content, title, chash = build_wiki_markdown(d, html, scraped)
+        with open(dest, "w", encoding="utf-8") as f:
+            f.write(content)
+        w_written.append((d, rel, len(content), chash[:12]))
+        print(f"✓ {rel}  {len(content)} 字符  hash={chash[:12]}")
+
+    if not args.dry_run and (written or w_written):
         log_lines = [
             "",
-            f"## [{scraped}] ingest | WorkBuddy 游戏行业日报 ×{len(written)}",
+            f"## [{scraped}] ingest | WorkBuddy 内容 ×{len(written) + len(w_written)}",
             "",
         ]
         for d, rel, n, h in written:
-            log_lines.append(f"- `{rel}` — published {d}，{n} 字符，hash {h}")
+            log_lines.append(f"- `{rel}` — 日报，published {d}，{n} 字符，hash {h}")
+        for d, rel, n, h in w_written:
+            log_lines.append(f"- `{rel}` — 百科词条，published {d}，{n} 字符，hash {h}")
         if failed:
             log_lines.append(f"- 失败 {len(failed)} 条：" + "、".join(x[0] for x in failed))
-        log_lines.append("- 来源：WorkBuddy 自动生成日报，属二手汇总，引用以原始报道为准")
+        log_lines.append("- 来源：WorkBuddy 自动生成，属二手汇总，引用以原始报道为准")
         append_log(log_lines)
 
     print()
-    print(f"写入 {len(written)} | 跳过（已存在）{len(skipped)} | 失败 {len(failed)}")
+    print(f"日报  写入 {len(written)} | 跳过（已存在）{len(skipped)}")
+    print(f"百科  写入 {len(w_written)} | 跳过（已存在）{len(w_skipped)}")
+    print(f"失败 {len(failed)}")
     if failed:
         for d, e in failed:
             print(f"  ✗ {d}: {e}")

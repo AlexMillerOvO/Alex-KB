@@ -182,24 +182,39 @@ Skill 在 `.agents/skills/karpathy-wiki/`，完整规程见其中的 `references
 
 **每个阶段结束后，向 `log.md` 追加一条记录。`log.md` 只追加，不改历史条目。**
 
-### 自动化：每日游戏日报
+### 自动化：每日游戏日报 + 游戏百科
 
-数据源：`https://game-industry-daily-86691.app.workbuddy.host/`（WorkBuddy 每天约 12:00 生成，静态 HTML，索引页列出全部日期）。
+数据源：`https://game-industry-daily-86691.app.workbuddy.host/`。
+
+站点有两条内容线，**每次都要一起抓**：
+
+| 内容 | 路径 | 日更 | 落到 |
+|---|---|---|---|
+| 游戏行业日报 | `/<日期>.html` | 每天 1 期 | `raw/<日期>_游戏行业日报.md` |
+| 游戏百科 | `/wiki/<日期>.html` | 每天 3 词条（美术 / 开发 / 拆解各一） | `raw/<日期>_游戏百科.md` |
 
 ```bash
-python3 scripts/ingest_daily.py              # 抓所有尚未入库的日期
-python3 scripts/ingest_daily.py --date 2026-11-02
+python3 scripts/ingest_daily.py              # 抓所有尚未入库的日期（日报 + 百科）
+python3 scripts/ingest_daily.py --date 2026-11-03
 python3 scripts/ingest_daily.py --latest 3
 python3 scripts/ingest_daily.py --dry-run    # 只报告不写文件
 ```
 
 脚本行为（纯标准库，无依赖）：
 
-- 已存在的 `raw/<日期>_游戏行业日报.md` 一律跳过，**不覆盖**——遵守 raw 不可变
-- `published` = 日报日期，`scraped` = 实际抓取日
-- 保留文内「来源」链接（可回溯到 17173 / 证券时报 / 腾讯新闻等原始报道）
+- 已存在的 raw 文件一律跳过，**不覆盖**——遵守 raw 不可变
+- `published` = 内容对应日期，`scraped` = 实际抓取日
+- 日报保留「来源」链接（17173 / 证券时报 / 腾讯新闻等原始报道）
+- 百科保留文末 6 条来源链接
 - 写完后自动向 `log.md` 追加一条 ingest 记录
-- 日报是**二手汇总**，生成的 raw 文件顶部会写明这一点
+- 两者都是**二手汇总**（`source_kind: report` / `encyclopedia`），raw 文件顶部会写明
+
+**百科词条的编译规则**（与日报不同）：
+
+- 每个词条是天然的 `entity_type: concept` 或 `pattern` 候选，按「是什么 / 为什么值得知道 / 举个例子」三段结构取材
+- 但**不要机械地一天建三页**。先搜已有主题：ECS、Dithering 这类通用概念有长期价值，可独立建页；「魂系篝火」这类应归并到同一个「魂系设计语言」页，后续同类词条继续补充该页
+- 词条正文的判断是生成方概括，建页时 `confidence: low`，关键结论回查文末的原始来源
+- 百科给的例子（如《Hyper Light Drifter》《只狼》）可写入对应页面的示例段，但不因此升级为定论
 
 定时：每天 18:00（Asia/Shanghai）由会话内的定时任务触发「抓取 → 编译 → 更新索引 → 发布」。
 脚本本身也可被 cron / launchd 单独调用（只做抓取，不含编译）。
