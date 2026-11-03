@@ -200,6 +200,7 @@ Skill 在 `.agents/skills/karpathy-wiki/`，完整规程见其中的 `references
 | `promote` | 把优质查询结果提升为正式文章 | `wiki/` |
 | `research` | 发现缺口 → 搜索 → 补录 → 编译 | 闭环 |
 | `lint` | 查重复、断链、孤立页、缺来源 | `outputs/reports/` |
+| `ingest_arxiv` | 按 arxiv_id 收论文全文到 `raw/` | `raw/<日期>_arxiv_<id>_<slug>.md` |
 
 **每个阶段结束后，向 `log.md` 追加一条记录。`log.md` 只追加，不改历史条目。**
 
@@ -239,6 +240,35 @@ python3 scripts/ingest_daily.py --dry-run    # 只报告不写文件
 
 定时：每天 18:00（Asia/Shanghai）由会话内的定时任务触发「抓取 → 编译 → 更新索引 → 发布」。
 脚本本身也可被 cron / launchd 单独调用（只做抓取，不含编译）。
+
+### 补充：arXiv 论文入库
+
+```bash
+python3 scripts/ingest_arxiv.py --query 'abs:"video game" AND abs:"level generation"'  # 只列候选，不写文件
+python3 scripts/ingest_arxiv.py --ids 2609.16679,2610.19213                            # 抓全文入库
+python3 scripts/ingest_arxiv.py --ids 2609.16679 --dry-run
+```
+
+脚本行为：
+
+- 按 **arxiv_id** 判重（不按文件名），已存在的论文跳过，遵守 raw 不可变
+- `published` = 论文首次提交日，`scraped` = 抓取日；额外写 `arxiv_id` / `authors` / `source_version`
+- 全文链路 `arxiv.org/html` → 降级 `ar5iv` → 再降级 abs 页只存摘要并标 `full_text: unavailable`
+- 内置黑名单过滤博弈论 / 区块链噪声（`game` 一词在 arXiv 上与它们严重撞车）
+- 串行 + sleep，遵守 arXiv 3 req/s 约定
+
+**AI×游戏 论文的收编与编译规则**：
+
+- 收**两类**：AI 用来做游戏（关卡、任务、世界、NPC）、AI 用来理解玩家（体验建模、设计反馈、玩家态度）
+- **不收**：以游戏为测试床的 AI 论文（benchmark、速通、Agent 评测）；AI 制作游戏（编码 agent 按设计稿产游戏）
+- 落在 `wiki/游戏设计/` 下，**不新开领域**（用户 2026-11-03 决定）
+- 分页主语是**设计师**（「能不能用、怎么用、门槛多高」），不是论文主题
+- 每页必须带可行性卡：`落地形态 | 依赖 | 成本量级 | 已验证范围 | 等级`
+  - A = 有可运行原型/已上线，可复现，不依赖自训大模型 → 本月可试
+  - B = 有实验验证但需工程改造或标注数据 → 一个项目周期
+  - C = 只有方法论或仿真 → **不收**，只在反论里提
+- `confidence` 封顶 `medium`（arXiv 多数未评审）
+- 禁止从摘要推方法细节；raw 里没有的不写
 
 ### 发布到 GitHub
 

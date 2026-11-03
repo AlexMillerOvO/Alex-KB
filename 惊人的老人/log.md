@@ -156,3 +156,106 @@ Wiki 目录结构已创建，准备开始 ingest。
 
 - `raw/2026-11-03_arxiv_2609.16679_ai-for-games-in-the-foundation-model-era.md` — paper 2609.16679，13287 字符，hash c52d9dd93b27
 - 来源：arXiv 预印本，多数未经同行评审
+
+## [2026-11-03] ingest | arXiv 论文 ×1
+
+- `raw/2026-11-03_arxiv_2609.16679_ai-for-games-in-the-foundation-model-era.md` — paper 2609.16679，13256 字符，hash 1803e9d62145
+- 来源：arXiv 预印本，多数未经同行评审
+
+## [2026-11-03] ingest | arXiv 论文 ×9
+
+- `raw/2026-11-03_arxiv_2603.26782_multiverse-language-conditioned-multi-game-level-blending-vi.md` — paper 2603.26782，22826 字符，hash ed6a37dc2593
+- `raw/2026-11-03_arxiv_2606.03857_a-novel-procedural-generation-for-level-design-of-mansions-a.md` — paper 2606.03857，3485 字符，hash 64c3fb9a7621
+- `raw/2026-11-03_arxiv_2605.01783_runtime-evaluation-of-procedural-content-generation-in-an-en.md` — paper 2605.01783，23408 字符，hash ea4bb07009b7
+- `raw/2026-11-03_arxiv_2604.25482_from-world-gen-to-quest-line-a-dependency-driven-prompt-pipe.md` — paper 2604.25482，59701 字符，hash 22c517248e61
+- `raw/2026-11-03_arxiv_2607.09403_fictional-worldbuilding-multi-agent-llm-collaboration-with-h.md` — paper 2607.09403，29449 字符，hash ee0201af3466
+- `raw/2026-11-03_arxiv_2609.02931_llm-guided-reinforcement-learning-for-adaptive-npc-behavior.md` — paper 2609.02931，5124 字符，hash 44105716484c
+- `raw/2026-11-03_arxiv_2606.16014_orchestrated-reality-from-role-play-to-living-playable-game.md` — paper 2606.16014，23325 字符，hash 2639540c7d59
+- `raw/2026-11-03_arxiv_2610.19213_prefer-from-player-experience-to-personalized-game-refinemen.md` — paper 2610.19213，26569 字符，hash 614a8f0cac5f
+- `raw/2026-11-03_arxiv_2606.01976_cobg-learning-from-player-reviews-to-design-critique-and-rev.md` — paper 2606.01976，6574 字符，hash 8c5e0b1ebebd
+- 来源：arXiv 预印本，多数未经同行评审
+
+## [2026-11-03] ingest | arXiv 论文 ×1
+
+- `raw/2026-11-03_arxiv_2608.11539_player-perceptions-of-generative-ai-in-games-a-steam-review.md` — paper 2608.11539，26184 字符，hash 873cfc22f593
+- 来源：arXiv 预印本，多数未经同行评审
+
+## [2026-11-03] ingest | arXiv 论文 ×11
+
+- `raw/2026-11-03_arxiv_2609.16679_ai-for-games-in-the-foundation-model-era.md` — paper 2609.16679，242521 字符，hash 46890727df51
+- `raw/2026-11-03_arxiv_2603.26782_multiverse-language-conditioned-multi-game-level-blending-vi.md` — paper 2603.26782，32863 字符，hash b73b43800406
+- `raw/2026-11-03_arxiv_2606.03857_a-novel-procedural-generation-for-level-design-of-mansions-a.md` — paper 2606.03857，3485 字符，hash 64c3fb9a7621
+- `raw/2026-11-03_arxiv_2605.01783_runtime-evaluation-of-procedural-content-generation-in-an-en.md` — paper 2605.01783，73009 字符，hash cf9676e6102f
+- `raw/2026-11-03_arxiv_2604.25482_from-world-gen-to-quest-line-a-dependency-driven-prompt-pipe.md` — paper 2604.25482，63838 字符，hash ff5407e42108
+- `raw/2026-11-03_arxiv_2607.09403_fictional-worldbuilding-multi-agent-llm-collaboration-with-h.md` — paper 2607.09403，73674 字符，hash ca15969184b4
+- `raw/2026-11-03_arxiv_2609.02931_llm-guided-reinforcement-learning-for-adaptive-npc-behavior.md` — paper 2609.02931，56928 字符，hash 96e8e820dcad
+- `raw/2026-11-03_arxiv_2606.16014_orchestrated-reality-from-role-play-to-living-playable-game.md` — paper 2606.16014，23839 字符，hash 2fd466495be2
+- `raw/2026-11-03_arxiv_2610.19213_prefer-from-player-experience-to-personalized-game-refinemen.md` — paper 2610.19213，28813 字符，hash 62c2283cd45d
+- `raw/2026-11-03_arxiv_2606.01976_cobg-learning-from-player-reviews-to-design-critique-and-rev.md` — paper 2606.01976，12030 字符，hash 720f901f9acd
+- `raw/2026-11-03_arxiv_2608.11539_player-perceptions-of-generative-ai-in-games-a-steam-review.md` — paper 2608.11539，61569 字符，hash c59602526252
+- 来源：arXiv 预印本，多数未经同行评审
+
+## [2026-11-03] ingest | arXiv 论文 ×11
+
+- `raw/2026-11-03_arxiv_2609.16679_ai-for-games-in-the-foundation-model-era.md` — paper 2609.16679，242582 字符，hash 94183f203b00
+- `raw/2026-11-03_arxiv_2603.26782_multiverse-language-conditioned-multi-game-level-blending-vi.md` — paper 2603.26782，34182 字符，hash fa53a5bd01cd
+- `raw/2026-11-03_arxiv_2606.03857_a-novel-procedural-generation-for-level-design-of-mansions-a.md` — paper 2606.03857，3485 字符，hash 64c3fb9a7621
+- `raw/2026-11-03_arxiv_2605.01783_runtime-evaluation-of-procedural-content-generation-in-an-en.md` — paper 2605.01783，75894 字符，hash b169c6bf0c9a
+- `raw/2026-11-03_arxiv_2604.25482_from-world-gen-to-quest-line-a-dependency-driven-prompt-pipe.md` — paper 2604.25482，63856 字符，hash 241a8cd0cba3
+- `raw/2026-11-03_arxiv_2607.09403_fictional-worldbuilding-multi-agent-llm-collaboration-with-h.md` — paper 2607.09403，75146 字符，hash 56c7c98d323a
+- `raw/2026-11-03_arxiv_2609.02931_llm-guided-reinforcement-learning-for-adaptive-npc-behavior.md` — paper 2609.02931，57780 字符，hash c342bbd1bc08
+- `raw/2026-11-03_arxiv_2606.16014_orchestrated-reality-from-role-play-to-living-playable-game.md` — paper 2606.16014，25289 字符，hash c5f82326b68f
+- `raw/2026-11-03_arxiv_2610.19213_prefer-from-player-experience-to-personalized-game-refinemen.md` — paper 2610.19213，29297 字符，hash e07ca7a82092
+- `raw/2026-11-03_arxiv_2606.01976_cobg-learning-from-player-reviews-to-design-critique-and-rev.md` — paper 2606.01976，31035 字符，hash 2d870a82c2ee
+- `raw/2026-11-03_arxiv_2608.11539_player-perceptions-of-generative-ai-in-games-a-steam-review.md` — paper 2608.11539，61766 字符，hash 0b215dbfe864
+- 来源：arXiv 预印本，多数未经同行评审
+
+## [2026-11-03] 决策 | AI×游戏 收编范围：并入游戏设计，不新开领域
+
+- 用户指示：不要新开 `wiki/AI 与游戏/`，并入 `wiki/游戏设计/`
+- 用户指示二：分页主语必须是**游戏设计领域内的 AI×游戏**（设计师能不能用），不是 AI 研究分类
+- 用户指示三：只收「相对有可行性」的成果
+- 筛选线：收「AI 做游戏（关卡/任务/世界/NPC）」+「AI 理解玩家（体验建模/设计反馈/玩家态度）」；
+  剔除「以游戏为测试床的 AI 评测」（benchmark、速通）与「AI 制作游戏」（编码 agent 产游戏）
+- 可行性分级写入 `AGENTS.md` 九：A 本月可试 / B 一个项目周期 / C 不收
+- 依据：用户 2026-11-03 对话；`purpose.md` 的「不覆盖与设计无关的内容」
+
+## [2026-11-03] ingest | arXiv 论文 ×11 + 飞书 ×2
+
+- 新建脚本 `scripts/ingest_arxiv.py`（纯标准库，镜像 `ingest_daily.py` 风格）
+  - 两种模式：`--query` 只列候选（套黑白名单）、`--ids` 抓全文入库
+  - 按 arxiv_id 判重；`published` = 论文首次提交日；额外字段 `arxiv_id` / `authors` / `source_version`
+  - 全文链路 `arxiv.org/html` → `ar5iv` → abs 页降级
+- **提取器 bug 修复过程（如实记录）**：
+  1. 首版把 `figure`/`table` 列入跳过标签 → 第 4 节之后正文全丢（Momentum 只提到 3.1 节）
+  2. 首版把 `svg` 列入跳过标签 → ar5iv 把正文渲染在 `<svg><foreignObject>` 内，整篇只剩摘要（CoBG）
+  3. 状态机 `in_bib` 提前触发且不退出 → 同样导致截断
+  4. 修复：改为 HTML 层面在 `ltx_biblist` 处截断 + skip 改为标签名栈；全部 11 篇重抓，10 篇章节完整，1 篇仅摘要
+- 入库 11 篇（`raw/2026-11-03_arxiv_*.md`）：
+  - 2609.16679 综述、2603.26782 Multiverse、2606.03857 Mansions（仅摘要）、
+    2605.01783 Momentum、2604.25482 World-Gen-to-Quest-Line、2607.09403 AutoWorldBuilder、
+    2609.02931 LLM 引导 NPC、2606.16014 Orchestrated Reality、
+    2610.19213 PREFER、2606.01976 CoBG、2608.11539 Steam 玩家态度
+- 入库 2 篇飞书（`source_kind: documentation`）：`ai核心概念`、`卡帕西知识库`
+  - 飞书 wiki 是虚拟滚动，只提到首屏正文，文件内已标注提取范围；零宽字符已剔除
+  - **不进 wiki**，仅作术语背景（超出 purpose.md 范围）
+
+## [2026-11-03] compile | AI×游戏 首批 5 篇并入游戏设计
+
+- 新建（均在 `wiki/游戏设计/`）：
+  - `AI 铺关卡：能用到哪一步.md`（pattern）— Momentum(A) / Multiverse(B) / Mansions(C 仅参考)
+  - `AI 写任务线与世界设定.md`（pattern）— World-Gen-to-Quest-Line + AutoWorldBuilder
+  - `AI 调 NPC 行为.md`（pattern）— LLM 战术标签 + Orchestrated Reality
+  - `AI 当设计评审.md`（pattern）— PREFER + CoBG
+  - `玩家怎么看 AI 生成内容.md`（concept，`confidence: medium`）— Steam 50 万条评论
+- 每页均带可行性卡（落地形态/依赖/成本/已验证范围/等级），`confidence` 封顶 medium
+- 未建页：
+  - 综述 2609.16679 — AI 视角版图，按标准主动不收，留作孤儿背景
+  - 飞书 ×2 — 术语背景，不建页
+- 协议更新：`purpose.md` 覆盖/不覆盖各加一条；`AGENTS.md` 九加 `ingest_arxiv` 入口与编译规则
+- 索引更新：Concept Index（+5 行）、Dashboard（重点文章 +5、最近添加 +1）、Source Index（重建，含孤儿分类）
+- 反链审计：12 篇全部有链接，无孤立；补 3 条真相关反链
+  - `AI 逆向与可防守位置` → `玩家怎么看 AI 生成内容`（供给侧 vs 需求侧）
+  - `AI 写任务线与世界设定` → `AI 调 NPC 行为`、`玩家怎么看 AI 生成内容`
+- 其余 30 对同领域候选逐对判定为无语义关系，不连（魂系 ↔ ECS、像素抖动 ↔ AI 低成本倒推 等）
+- 断链检查：0 条（含 raw 引用与 wiki 互链）

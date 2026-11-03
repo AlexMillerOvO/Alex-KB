@@ -130,16 +130,23 @@ class BodyExtractor(HTMLParser):
     """
 
     # 需要整体跳过的块级标签（含其所有子节点）
+    # 注意 1：不能跳过 figure / table —— arXiv 用 ltx_float 包裹算法、表格和结果段，
+    #         跳过它们会吞掉正文主体（实测第 4 节之后全部丢失）。
+    # 注意 2：不能跳过 svg / math —— ar5iv 把正文渲染在 <svg><foreignObject> 内，
+    #         跳过 svg 会导致整篇只剩摘要；math 内是公式文本，保留。
     SKIP_TAGS = {"script", "style", "nav", "header", "footer",
-                 "figure", "table", "picture", "form", "svg", "math"}
+                 "picture", "form"}
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.out = []          # markdown 行
         self.buf = []          # 当前行内文本缓冲
-        self.skip = 0          # >0 时在跳过块内部
-        self.in_bib = False    # 进入参考文献后截断
+        self.skip_stack = []   # 被跳过的标签名栈（替代整数计数，避免自闭合标签失衡）
         self.in_toc = False    # 目录块内
+
+    @property
+    def skip(self):
+        return bool(self.skip_stack)
 
     def _flush(self):
         t = clean("".join(self.buf))
@@ -150,27 +157,20 @@ class BodyExtractor(HTMLParser):
         a = dict(attrs)
         cls = a.get("class", "")
 
-        if self.skip:
-            self.skip += 1
+        # 已在跳过块内部：任何子标签都入栈，endtag 时出栈
+        if self.skip_stack:
+            self.skip_stack.append(tag)
             return
-        if self.in_bib:
-            return
-
-        if tag in self.SKIP_TAGS:
-            self.skip += 1
+        if self.in_toc:
             return
 
-        # 参考文献块：进入后截断（后面全跳过）
-        if tag == "ul" and "ltx_biblist" in cls:
-            self.in_bib = True
+        if tag in self.SKIP_TAGS or "ltx_ERROR" in cls:
+            self.skip_stack.append(tag)
             return
+
         # 目录块：进入后整体跳过
         if tag == "div" and "ltx_TOC" in cls:
             self.in_toc = True
-            return
-        # LaTeX 错误命令（ltx_ERROR）：跳过该 span 的所有子节点
-        if "ltx_ERROR" in cls:
-            self.skip += 1
             return
 
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
@@ -186,20 +186,16 @@ class BodyExtractor(HTMLParser):
             return
 
     def handle_endtag(self, tag):
-        if self.skip:
-            self.skip -= 1
+        # 跳过栈：只弹出栈顶匹配的标签
+        if self.skip_stack:
+            if self.skip_stack[-1] == tag:
+                self.skip_stack.pop()
             return
-        if self.in_bib:
-            return
-
-        # 目录块结束
         if self.in_toc:
             if tag == "div":
                 self.in_toc = False
             return
 
-        if tag in self.SKIP_TAGS:
-            return
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
             t = self._flush()
             if t:
@@ -218,14 +214,16 @@ class BodyExtractor(HTMLParser):
             return
 
     def handle_data(self, data):
-        if self.skip or self.in_bib or self.in_toc:
+        if self.skip_stack or self.in_toc:
             return
         if data:
             self.buf.append(data)
 
+    _JUNK = re.compile(r'^(?:\\[a-zA-Z][^\n]*|[a-z]+section\s*\[[^\]]*\])$')
+
     def result(self):
         self._flush()
-        # 折叠空行，丢弃未闭合的标题标记
+        # 折叠空行，丢弃未闭合的标题标记与 LaTeX/TOC 残片
         out, blank = [], False
         for ln in self.out:
             if isinstance(ln, tuple):
@@ -234,17 +232,31 @@ class BodyExtractor(HTMLParser):
                 if not blank:
                     out.append("")
                 blank = True
-            else:
-                out.append(ln)
-                blank = False
+                continue
+            s = ln.strip()
+            if s == "Contents" or self._JUNK.match(s):
+                continue  # 目录标题 / LaTeX 命令残片
+            out.append(ln)
+            blank = False
         return "\n".join(out).strip()
 
 
 def extract_body(html):
-    """从 arXiv HTML 提取正文。"""
-    # 定位 <article>，没有则用全文
+    """从 arXiv HTML 提取正文。
+
+    在 HTML 层面做三件事，避免依赖提取器的状态机：
+      1. 定位 <article>
+      2. 切掉 ltx_biblist（参考文献）之后的所有内容
+      3. 交给 BodyExtractor 提取标题/段落/列表
+    """
     m = re.search(r"<article\b", html)
     seg = html[m.start():] if m else html
+
+    # 参考文献块：无论 arxiv.org 还是 ar5iv，都在 <ul class="ltx_biblist"> 处截断
+    b = re.search(r'<ul\b[^>]*class="[^"]*ltx_biblist[^"]*"[^>]*>', seg)
+    if b:
+        seg = seg[:b.start()]
+
     p = BodyExtractor()
     try:
         p.feed(seg)
