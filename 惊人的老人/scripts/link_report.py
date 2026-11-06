@@ -72,6 +72,10 @@ def collect():
         body = strip_code(txt)
         for m in re.finditer(r'\[\[([^\]|#]+)', body):
             tgt = m.group(1).strip().rstrip('\\')
+            # sources: 里常写成 [[raw/xxx.md]]，带 .md 后缀；索引页写成 [[raw/xxx]]。
+            # 两种写法指向同一个文件，统一去掉 .md 再匹配，否则 frontmatter 引用会被漏掉。
+            if tgt.endswith('.md') and tgt not in by_name:
+                tgt = tgt[:-3]
             if tgt in by_name:
                 q = by_name[tgt]
                 if q != rel:
