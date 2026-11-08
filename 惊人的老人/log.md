@@ -591,3 +591,10 @@ Wiki 目录结构已创建，准备开始 ingest。
 ### 发布
 
 待执行。
+
+## [2026-11-08] publish | 发布结果与通道异常
+
+- 推送成功：ed9b803 → 380e68b（14 files changed, +602/−15）
+- **通道异常（重要）**：本机全局配置的 `http.https://github.com/.proxy = http://127.0.0.1:7897` 今天失效——代理端口 7897 仍在监听，但经它访问 github.com 返回 TLS 重置（000）。同一时刻直连 github.com 返回 200，`api.github.com` 直连也正常。
+- 处理方式：**没有改持久配置**，只在本次命令的进程内用 `GIT_CONFIG_COUNT/KEY_0/VALUE_0` 把该 proxy 置空，绕过失效代理后 `ls-remote` 与 `push` 均成功
+- 遗留建议：要么修好本地代理的 github.com 规则，要么把这条 per-URL proxy 配置从全局配置里移除（当前直连可用）。**这属于改配置，等你确认后再动**
