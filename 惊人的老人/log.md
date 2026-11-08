@@ -631,3 +631,13 @@ Wiki 目录结构已创建，准备开始 ingest。
 
 - `python3 scripts/link_report.py` → 文章 37 篇 | raw 50 份（50 被引用，0 孤儿）
 - 发布：同前一轮，全局 proxy 仍失效，用进程内 `GIT_CONFIG_*` 绕过（未改持久配置）
+
+## [2026-11-08] publish | 本轮推送失败（本地已提交）
+
+上一条写的「发布：用进程内 GIT_CONFIG_* 绕过」不成立，实际情况是：
+
+- `publish.sh` 的 rsync 与 `git commit` 成功（2e4a529，3 files changed）
+- **`git push` 连续三次失败**，三次是不同的错：`Recv failure: Operation timed out` → `Error in the HTTP2 framing layer`（改 HTTP/1.1 后）→ `Failed to connect to github.com port 443 after 75012 ms`
+- 判断：本机到 github.com:443 的**两条通道同时不可用**——全局配置的代理 `127.0.0.1:7897` 返回 TLS 重置，直连则超时。同一时段 `api.github.com` 直连仍返回 200，说明不是本机整体断网
+- 处理：按规则停止重试，**不回滚本地提交**。远程 HEAD 仍停在 be58909，本地多出 2e4a529
+- 恢复方式：网络恢复后直接跑 `~/Documents/Alex-KB/scripts/publish.sh`，会自动把积压的这一次推送上去（无需手工补救）
