@@ -16,7 +16,7 @@ tags:
   - 世界构建
   - 任务设计
 created: 2026-11-03
-updated: 2026-11-03
+updated: 2026-11-09
 sources:
   - "[[raw/2026-11-03_arxiv_2604.25482_from-world-gen-to-quest-line-a-dependency-driven-prompt-pipe.md]]"
   - "[[raw/2026-11-03_arxiv_2607.09403_fictional-worldbuilding-multi-agent-llm-collaboration-with-h.md]]"
@@ -122,6 +122,7 @@ AutoWorldBuilder 系统用五个组件解决世界构建：
 - [[AI 当设计评审]] — 本篇的生成/审查分离，与该篇的「用 AI 评审设计」是同一个原理的两个用法
 - [[AI 调 NPC 行为]] — 同属「用 AI 管内容/行为」，但那篇处理实时战斗，本篇处理叙事
 - [[玩家怎么看 AI 生成内容]] — 生成能力越强，产出被玩家识别为 AI 的风险越高
+- [[对话管线]] — 同一条问题的手工解：那边用表格 + 变体池 + 人工配音规模化台词，这边用 LLM 生成 + 审查 agent
 - [[raw/2026-11-03_feishu_ai核心概念.md]] — 术语背景：Agent / Workflow / Context Window
 
 ## 开放问题
