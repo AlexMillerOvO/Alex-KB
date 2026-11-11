@@ -863,3 +863,18 @@ Wiki 目录结构已创建，准备开始 ingest。
 ### 未触发「必须先问我的事」
 
 逐条核对 `AGENTS.md` 七：没有覆盖或删除已有 wiki 正文（`抽卡保底机制` / `再来一回合` 只做新增行，未改结论）；没有移动或重命名目录；没有判定某批资料「已完成整理」；没有来源冲突需要裁决；新内容在 `purpose.md` 的「游戏设计方法论」范围内；没有安装插件或连外部 API。
+
+## [2026-11-11] publish | 推送 GitHub 失败，保留本地提交
+
+- 本地提交：`9be495c sync: 2026-11-11 11:53 知识库同步`（9 files changed, 613 insertions(+), 10 deletions(-)）。新建三份：`惊人的老人/raw/2026-11-11_小目标设计方法库.md`、`惊人的老人/wiki/游戏设计/小目标拆解.md`、`惊人的老人/wiki/游戏设计/玩家需求八分类.md`。
+- 失败原文（第一次，由 `publish.sh` 内 `git push origin main` 返回）：
+  ```
+  fatal: unable to access 'https://github.com/AlexMillerOvO/Alex-KB.git/': LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
+  ```
+- 诊断：`http.https://github.com/.proxy = http://127.0.0.1:7897` 已配置；代理端口 7897 可连（`nc -z` 通过）；`https://api.github.com/` 返回 200。**只有 `github.com:443` 握手被断**，与 `AGENTS.md` 九「github.com:443 在本机被单独阻断」的描述一致。
+- 只做了一次重试（`git push origin main`，带 low-speed 超时保护），返回同一条错误：
+  ```
+  fatal: unable to access 'https://github.com/AlexMillerOvO/Alex-KB.git/': LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
+  ```
+- 按协议停止：**不反复重试、不 `--force`、不回滚入库与编译成果**。本地提交完整保留；网络恢复后直接跑 `~/Documents/Alex-KB/scripts/publish.sh` 即可补推（它会先同步本条日志，再提交并推送）。
+- 本条日志写于推送失败之后，所以它自身也只存在于本地提交里。
