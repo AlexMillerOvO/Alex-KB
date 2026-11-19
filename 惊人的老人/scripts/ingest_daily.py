@@ -23,11 +23,44 @@ import os
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from html import unescape
 from html.parser import HTMLParser
 
 BASE = "https://game-industry-daily-86691.app.workbuddy.host"
+
+# 分享码门禁（2026-11-12 起）：站点对所有固定路径返回 403，除非带上 __wb_rsc cookie。
+# 做法：每次运行开头先用 ?sharecode= 预热一次，换 30 天有效的 cookie，之后所有请求都带它；
+# 分享码本身不进 URL 以外的任何地方（source_url 保持干净地址，raw 与公开镜像里都不留）。
+SHARECODE_ENV = "WB_SHARECODE"
+SHARECODE_FILE = os.path.expanduser("~/.config/alex-kb/workbuddy_sharecode")
+COOKIE = None
+
+
+def resolve_sharecode():
+    """分享码来源：环境变量 WB_SHARECODE > ~/.config/alex-kb/workbuddy_sharecode。"""
+    v = os.environ.get(SHARECODE_ENV, "").strip()
+    if v:
+        return v
+    try:
+        with open(SHARECODE_FILE, encoding="utf-8") as f:
+            return f.read().strip()
+    except OSError:
+        return ""
+
+
+def login(sharecode):
+    """用分享码换 cookie；站点没有门禁时返回 None，不视为错误。"""
+    url = f"{BASE}/?sharecode={urllib.parse.quote(sharecode)}"
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        for c in r.headers.get_all("Set-Cookie") or []:
+            m = re.match(r"__wb_rsc=([0-9A-Za-z]+)", c)
+            if m:
+                return m.group(1)
+    return None
+
 VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(VAULT, "raw")
 LOG = os.path.join(VAULT, "log.md")
@@ -227,7 +260,10 @@ def render_block(node, depth=0):
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    hdrs = {"User-Agent": UA}
+    if COOKIE:
+        hdrs["Cookie"] = f"__wb_rsc={COOKIE}"
+    req = urllib.request.Request(url, headers=hdrs)
     with urllib.request.urlopen(req, timeout=30) as r:
         return r.read().decode("utf-8", errors="replace")
 
@@ -361,9 +397,20 @@ def main():
     ap.add_argument("--latest", type=int, help="只抓最新 N 天")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--base", default=BASE)
+    ap.add_argument("--sharecode", help="站点分享码；默认取 WB_SHARECODE 或 ~/.config/alex-kb/workbuddy_sharecode")
     args = ap.parse_args()
 
     BASE = args.base.rstrip("/")
+
+    global COOKIE
+    sharecode = args.sharecode or resolve_sharecode()
+    if sharecode:
+        try:
+            COOKIE = login(sharecode)
+        except (urllib.error.URLError, TimeoutError) as e:
+            print(f"WARN: 分享码预热失败：{e}", file=sys.stderr)
+        if COOKIE:
+            print("✓ 分享码预热成功，本次运行复用 cookie")
 
     scraped = dt.date.today().isoformat()
 
